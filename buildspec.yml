@@ -8,26 +8,24 @@ phases:
 
   build:
     commands:
-      - echo "Building Frontend..."
+      - echo Building Frontend image...
       - docker build -t app-frontend ./app
-      - docker tag app-frontend:latest 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
-
-      - echo "Building Backend..."
+      - echo Building API image...
       - docker build -t api-backend ./api
+
+      - echo Tagging images...
+      - docker tag app-frontend:latest 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
       - docker tag api-backend:latest 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
   post_build:
     commands:
-      - echo "Pushing Frontend..."
+      - echo Pushing images...
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
-
-      - echo "Pushing Backend..."
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
-      - echo "Creating imagedefinitions.json..."
-      - printf '[{"name":"app","imageUri":"486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest"},{"name":"api","imageUri":"486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest"}]' > imagedefinitions.json
+      - echo Writing imagedefinitions.json
+      - printf '[{"name":"app","imageUri":"486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest"}, {"name":"api","imageUri":"486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest"}]' > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
-
