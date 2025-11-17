@@ -1,11 +1,16 @@
-version: "3"
 services:
-  app:                # frontend
-    build: ./app
-    container_name: frontend
-    ports:
-      - "80:80"       # map local port 80 → container port 80
-
-  api:                # backend
+  api:
     build: ./api
-    container_name: backend
+    container_name: api
+    expose:
+      - "8080"
+
+  app:
+    build: ./app
+    container_name: app
+    ports:
+      - "80:80"
+    environment:
+      API_HOST: api
+    depends_on:
+      - api
