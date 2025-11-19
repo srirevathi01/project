@@ -3,13 +3,14 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging into Amazon ECR...
+      - echo Logging into ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 486296873132.dkr.ecr.us-east-1.amazonaws.com
 
   build:
     commands:
       - echo Building Frontend image...
       - docker build -t app-frontend ./app
+
       - echo Building API image...
       - docker build -t api-backend ./api
 
@@ -23,9 +24,11 @@ phases:
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
-      - echo Writing imagedefinitions.json
-      - printf '[{"name":"app","imageUri":"486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest"}, {"name":"api","imageUri":"486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest"}]' > imagedefinitions.json
+      - echo Creating taskdef.json and appspec.yml artifacts...
+      - printf '{"family":"app-task","containerDefinitions":[{"name":"app","image":"486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest"},{"name":"api","image":"486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest"}]}' > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
+    - appspec.yml
+    - taskdef.json

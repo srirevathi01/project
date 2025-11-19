@@ -1,0 +1,65 @@
+{
+  "family": "app-task",
+  "networkMode": "awsvpc",
+  "executionRoleArn": "arn:aws:iam::486296873132:role/ecsTaskExecutionRole",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "<IMAGE1_NAME>",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "environment": [
+        { "name": "API_HOST", "value": "localhost" }
+      ],
+      "portMappings": [
+        { "containerPort": 80, "protocol": "tcp" }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost/app/ || exit 1"],
+        "interval": 30,
+        "retries": 3,
+        "startPeriod": 10,
+        "timeout": 5
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/app-task",
+          "awslogs-create-group": "true",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "app"
+        }
+      }
+    },
+    {
+      "name": "api",
+      "image": "<IMAGE2_NAME>",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        { "containerPort": 8080, "protocol": "tcp" }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"],
+        "interval": 30,
+        "retries": 3,
+        "startPeriod": 10,
+        "timeout": 5
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/app-task",
+          "awslogs-create-group": "true",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "api"
+        }
+      }
+    }
+  ]
+}
