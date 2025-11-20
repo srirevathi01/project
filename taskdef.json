@@ -16,7 +16,7 @@
         { "name": "API_HOST", "value": "localhost" }
       ],
       "portMappings": [
-        { "containerPort": 80, "protocol": "tcp" }
+        { "containerPort": 8080, "protocol": "tcp" }
       ],
       "healthCheck": {
         "command": [
@@ -45,7 +45,7 @@
       "memory": 512,
       "essential": true,
       "portMappings": [
-        { "containerPort": 8080, "protocol": "tcp" }
+        { "containerPort": 80, "protocol": "tcp" }
       ],
       "healthCheck": {
         "command": [
