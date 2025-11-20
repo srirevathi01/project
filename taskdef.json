@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "app",
-      "image": "IMAGE1_NAME",
+      "image": "<IMAGE1_NAME>",
       "cpu": 256,
       "memory": 512,
       "essential": true,
@@ -40,7 +40,7 @@
     },
     {
       "name": "api",
-      "image": "IMAGE2_NAME",
+      "image": "<IMAGE2_NAME>",
       "cpu": 256,
       "memory": 512,
       "essential": true,
