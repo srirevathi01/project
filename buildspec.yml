@@ -24,11 +24,7 @@ phases:
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
-      - echo Creating taskdef.json and appspec.yml artifacts...
-      - printf '{"family":"app-task","containerDefinitions":[{"name":"app","image":"486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest"},{"name":"api","image":"486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest"}]}' > imagedefinitions.json
-
 artifacts:
   files:
-    - imagedefinitions.json
-    - appspec.yml
     - taskdef.json
+    - appspec.yml
