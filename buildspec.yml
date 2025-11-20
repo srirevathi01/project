@@ -18,17 +18,19 @@ phases:
       - docker tag app-frontend:latest 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
       - docker tag api-backend:latest 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
-  post_build:
-    commands:
-      - echo Pushing images...
-      - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
-      - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
+post_build:
+  commands:
+    - echo Pushing images...
+    - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
+    - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
-      - echo "Updating taskdef.json..."
-      - sed -e "s|IMAGE1_NAME|486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest|g" -e "s|IMAGE2_NAME|486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest|g" taskdef.json > taskdef-updated.json
-
-      - mv taskdef-updated.json taskdef.json
-
+    - echo "Updating taskdef.json with image names..."
+    - |
+      sed -e "s|IMAGE1_NAME|486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest|g" \
+          -e "s|IMAGE2_NAME|486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest|g" \
+          taskdef.json > taskdef.json.tmp
+    - mv taskdef.json.tmp taskdef.json
+    
 artifacts:
   files:
     - taskdef.json
