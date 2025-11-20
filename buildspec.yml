@@ -24,12 +24,14 @@ phases:
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest
       - docker push 486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest
 
-      - echo "Preparing task definition file..."
+      - echo "Updating taskdef.json with image names..."
       - sed -e "s|IMAGE1_NAME|486296873132.dkr.ecr.us-east-1.amazonaws.com/app-frontend:latest|g" \
             -e "s|IMAGE2_NAME|486296873132.dkr.ecr.us-east-1.amazonaws.com/api-backend:latest|g" \
-            taskdef.json > taskdef-final.json
+            taskdef.json > taskdef-updated.json
+
+      - mv taskdef-updated.json taskdef.json
 
 artifacts:
   files:
-    - taskdef-final.json
+    - taskdef.json
     - appspec.yml
